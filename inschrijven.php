@@ -11,35 +11,61 @@ require 'lib/recaptcha.php';
 
 $firstnameErr = $lastnameErr = $emailErr = $visitorErr = "";
 
-
+// Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+    // Get the secret key for Google reCAPTCHA from the configuration
     $recaptcha_secret = $config::GOOGLE_RECAPTCHA_SECRET_KEY;
-    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$recaptcha_secret."&response=".$_POST['g-recaptcha-response']);
+    // Send a request to Google reCAPTCHA API to verify the user's response
+    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $recaptcha_secret . "&response=" . $_POST['g-recaptcha-response']);
     $response = json_decode($response, true);
 
-    if($response["success"] === true){
-        if (empty($_POST["firstname"])) {
-            $firstnameErr = 'Voer aub je voornaam in';
+    $filledIn = true;
+
+    // Check if the reCAPTCHA verification succeeded
+    if ($response["success"] === true) {
+
+        if($_POST['visitor'] == 'no'){
+            $fields = [
+                "firstname" => "Voer aub je voornaam in",
+                "lastname" => "Voer aub je achternaam in",
+                "student-number" => "Voer je studenten nummer of postcode in",
+                "email" => "Voer je email in",
+                "visitor" => "Voer in of je een bezoeker bent of niet",
+                "classroom" => "Voer in of je een bezoeker bent of niet"
+            ];
+        }else{
+            $fields = [
+                "firstname" => "Voer aub je voornaam in",
+                "lastname" => "Voer aub je achternaam in",
+                "student-number" => "Voer je studenten nummer of postcode in",
+                "email" => "Voer je email in",
+                "visitor" => "Voer in of je een bezoeker bent of niet",
+            ];
         }
-        if (empty($_POST["lastname"])) {
-            $lastnameErr = 'Voer aub je achternaam in';
+
+
+
+
+        // Initialize an empty array to store the error messages
+        $errors = [];
+
+        // Check each field for emptiness and populate the errors array if necessary
+        foreach ($fields as $fieldName => $errorMessage) {
+            if (empty($_POST[$fieldName])) {
+                $errors[$fieldName] = $errorMessage;
+                $filledIn = false;
+            }
         }
-        if (empty($_POST["studentnumber"])) {
-            $studentNumberErr = 'Voer je studenten nummer of postcode in';
-        }
-        if (empty($_POST["email"])) {
-            $emailErr = 'Voer je email in';
-        }
-        if (empty($_POST["visitors"])) {
-            $visitorErr = 'Voer in of je een bezoeker ben of niet';
-        }
-    }else{
-        $recaptchaErr = 'Vul de recaptcha in';
+    } else {
+        // The reCAPTCHA verification failed
+        $recaptchaErr = 'Vul de reCAPTCHA in';
+        $filledIn = false;
     }
+}
 
-
-
+if ($filledIn){
+    header('Location: inschrijven-voltooid.php');
 }
 
 ?>
@@ -57,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                value="<?php if ($_POST['firstname'] ?? null) {
                                    echo $_POST['firstname'];
                                } ?>">
-                        <span class="error"><?php echo $firstnameErr ?? null; ?></span>
+                        <span class="error"><?php echo $firstnameErr = $errors["firstname"] ?? ''; ?></span>
                     </div>
                     <div class="lastname">
                         <label for="lastname">Achternaam<span>(verplicht)</span></label>
@@ -65,16 +91,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                value="<?php if ($_POST['lastname'] ?? null) {
                                    echo $_POST['lastname'];
                                } ?>">
-                        <span class="error"><?php echo $firstnameErr ?? null; ?></span>
+                        <span class="error"><?php echo $lastnameErr = $errors["lastname"] ?? ''; ?></span>
                     </div>
                     <div class="student-number">
                         <label for="student-number">Leerlingnummer<span>(verplicht)</span></label>
                         <p>Indien je geen leerlingnummer hebt gebruik je postcode</p>
                         <input type="text" name="student-number" placeholder="Je leeringnummer/postcode hier..."
-                               value="<?php if ($_POST['studentnumber'] ?? null) {
-                                   echo $_POST['studentnumber'];
+                               value="<?php if ($_POST['student-number'] ?? null) {
+                                   echo $_POST['student-number'];
                                } ?>">
-                        <span class="error"><?php echo $lastnameErr ?? null; ?></span>
+                        <span class="error"><?php echo $studentNumberErr = $errors["student-number"] ?? ''; ?></span>
                     </div>
                     <div class="email">
                         <label for="email">Email<span>(verplicht)</span></label>
@@ -83,16 +109,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                value="<?php if ($_POST['email'] ?? null) {
                                    echo $_POST['email'];
                                } ?>">
-                        <span class="error"><?php echo $emailErr ?? null; ?></span>
+                        <span class="error"><?php echo $emailErr = $errors["email"] ?? ''; ?></span>
                     </div>
                     <div class="visitors">
                         <label for="visitor">Bezoeker<span>(verplicht)</span></label>
-                        <select name="visitor" id="visitor">
-                            <option value="">Maak een keuze</option>
-                            <option value="yes">Ik ben een bezoeker</option>
-                            <option value="no">Ik ben geen bezoeker</option>
+                        <select name="visitor" id="visitor" onchange="classroomAdder(this.value)">
+                            <option value="" id="visitor-">Maak een keuze</option>
+                            <option value="yes" id="visitor-yes">Ik ben een bezoeker</option>
+                            <option value="no" id="visitor-no">Ik ben geen bezoeker</option>
                         </select>
-                        <span class="error"><?php echo $visitorErr ?? null; ?></span>
+                        <span class="error"><?php echo $visitorErr = $errors["visitor"] ?? ''; ?></span>
                     </div>
                     <div class="snackcar">
                         <label for="snackcar">Frietkar (&euro;7)</label>
@@ -102,28 +128,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <option value="no">Nee</option>
                         </select>
                     </div>
-                    <div class="classroom">
+                    <div class="classroom" id="classroom-section">
                         <label for="classroom">Kies je plek</label>
-                        <p>Bezoekers hoeven geen plek te kiezen</p>
+                        <p>Kies een lokaal</p>
                         <select name="classroom" id="classroom">
                             <option value="">Maak een keuze</option>
                             <?php
+                            // Establish a connection to the database using the 'NachtVanCuijk' database name
                             startConnection('NachtVanCuijk');
 
+                            // Define the SQL query to select all rows from the 'Classrooms' table
                             $query = 'SELECT * FROM Classrooms';
 
+                            // Execute the SQL query and store the result
                             $result = executeQuery($query);
 
+                            // Iterate through each row in the result and generate HTML options for a dropdown menu
                             while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-                                echo "<option value=:" . $row["ClassroomNumber"] . "> " . $row["ClassroomNumber"] . "</option>";
+                                // Extract the "ClassroomNumber" value from the current row and use it as the option value and text
+                                $classroomNumber = $row["ClassroomNumber"];
+                                echo "<option value='$classroomNumber'>$classroomNumber</option>";
                             }
                             ?>
                         </select>
-                        <span class="error"><?php echo $classroomErr ?? null; ?></span>
+                        <span class="error"><?php echo $errors["classroom"] ?? ''; ?></span>
                     </div>
                     <div class="grecaptcha">
                         <div class="g-recaptcha" data-sitekey="<?php echo $config::GOOGLE_RECAPTCHA_SITE_KEY ?>"></div>
-                        <span class="error"><?php echo $emailErr ?? null; ?></span>
+                        <span class="error"><?php echo $recaptchaErr ?? null; ?></span>
                     </div>
                     <div class="acceptag">
                         <label for="acceptag">

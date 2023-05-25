@@ -19,7 +19,7 @@ $config = new Config();
     <link rel="stylesheet" href="/styles/stylesheet.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat|Roboto+Slab">
     <script src='https://www.google.com/recaptcha/api.js' async defer></script>
-
+    <script src="scripts/script.js" defer></script>
     <title>Nacht Van Cuijk</title>
 </head>
 <body>

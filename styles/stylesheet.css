@@ -599,6 +599,10 @@ div.submit {
     width: 100%;
 }
 
+#classroom-section {
+    display: none;
+}
+
 input, label {
     display: block;
 }
