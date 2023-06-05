@@ -4,9 +4,11 @@
 */
 
 
-include('includes/nav.php');
+include 'includes/header.php';
+include 'includes/nav.php';
+
 require 'lib/db-functions.php';
-//  require 'lib/mailer.php';
+require 'lib/time_formatter.php';
 ?>
 
 <div class="frontpage">
@@ -35,7 +37,18 @@ require 'lib/db-functions.php';
                     Het doel is dan om iedereen bij elkaar te brengen over een gezamenlijke hobby. Het wordt met vol
                     trusts georganiseerd door leerlingen van Koning Willem 1 College. De Nacht van Cuijk is voor het
                     eerst georganiseerd in 2009. De eerstvolgende editie van de Nacht van Cuijk zal plaatsvinden op
-                    donderdag 6 juli 2023 (aanvang vanaf 17.00)</p>
+                    <?php
+                    startConnection('NachtVanCuijk');
+
+                    $query = 'select * from Date';
+
+                    $result = executeQuery($query, '');
+
+                    while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
+                        echo longDateNoTime($row['NachtVanCuijkDate']) . ' (aanvang vanaf ' . noDateWithTime($row['NachtVanCuijkDate']) . ')';
+                    }
+                    ?>
+                </p>
             </div>
             <div class="image">
                 <img src="images/section_digiboard_with_people_around.jpg"
@@ -56,11 +69,9 @@ require 'lib/db-functions.php';
             <h2>
                 <?php
 
-                startConnection('NachtVanCuijk');
+                $query = "SELECT count(*) AS 'count' FROM SignUp";
 
-                $query = "SELECT count(*) AS 'count' FROM SignUps";
-
-                $result = executeQuery($query);
+                $result = executeQuery($query,'');
 
                 $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
 
@@ -87,11 +98,11 @@ require 'lib/db-functions.php';
         <?php
         $query = 'select * from Sponsors';
 
-        $result = executeQuery($query);
+        $result = executeQuery($query,'');
 
         while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) { ?>
             <div class="card">
-                <a href="<?php echo $row['SponsorWebLink'] ?>" target="_blank">
+                <a href="<?php echo $row['SponsorWeblink'] ?>" target="_blank">
                     <img src="<?php echo $row['SponsorLogo'] ?>" alt="Logo van een sponsor">
                     <div class="background">
                     </div>

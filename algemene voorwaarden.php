@@ -2,7 +2,7 @@
 /*
  * Gemaakt door: Justin Lama Perez
  */
-
+include 'includes/header.php';
 include 'includes/nav.php';
 ?>
 

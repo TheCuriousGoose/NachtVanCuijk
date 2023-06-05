@@ -2,14 +2,15 @@
 /*
  * Gemaakt door: Justin Lama Perez
  */
-
+include 'includes/header.php';
 include 'includes/nav.php';
 
 require 'lib/db-functions.php';
-require 'lib/recaptcha.php';
 //require 'lib/mailer.php';
 
 $firstnameErr = $lastnameErr = $emailErr = $visitorErr = "";
+
+$filledIn = true;
 
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -20,32 +21,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $recaptcha_secret . "&response=" . $_POST['g-recaptcha-response']);
     $response = json_decode($response, true);
 
-    $filledIn = true;
-
     // Check if the reCAPTCHA verification succeeded
     if ($response["success"] === true) {
 
-        if($_POST['visitor'] == 'no'){
-            $fields = [
-                "firstname" => "Voer aub je voornaam in",
-                "lastname" => "Voer aub je achternaam in",
-                "student-number" => "Voer je studenten nummer of postcode in",
-                "email" => "Voer je email in",
-                "visitor" => "Voer in of je een bezoeker bent of niet",
-                "classroom" => "Voer in of je een bezoeker bent of niet"
-            ];
-        }else{
-            $fields = [
-                "firstname" => "Voer aub je voornaam in",
-                "lastname" => "Voer aub je achternaam in",
-                "student-number" => "Voer je studenten nummer of postcode in",
-                "email" => "Voer je email in",
-                "visitor" => "Voer in of je een bezoeker bent of niet",
-            ];
+        $fields = [
+            "firstname" => "Voer aub je voornaam in",
+            "lastname" => "Voer aub je achternaam in",
+            "student-number" => "Voer je studenten nummer of postcode in",
+            "email" => "Voer je email in",
+            "visitor" => "Voer in of je een bezoeker bent of niet",
+        ];
+
+        if ($_POST['visitor'] == 'no') {
+            $fields["classroom"] = "Voer in of je een bezoeker bent of niet";
         }
-
-
-
 
         // Initialize an empty array to store the error messages
         $errors = [];
@@ -62,12 +51,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $recaptchaErr = 'Vul de reCAPTCHA in';
         $filledIn = false;
     }
-}
 
-if ($filledIn){
-    header('Location: inschrijven-voltooid.php');
+    if ($filledIn){
+        ?>
+        <form id="redirectForm" action="inschrijven-conformatie.php" method="post">
+            <?php
+            foreach ($_POST as $a => $b) {
+                echo '<input type="hidden" name="'.htmlentities($a).'" value="'.htmlentities($b).'">';
+            }
+            ?>
+        </form>
+        <script type="text/javascript">
+            document.getElementById('redirectForm').submit();
+        </script>
+        <?php
+    }
 }
-
 ?>
 
     <div class="signup-wrapper">
@@ -115,8 +114,8 @@ if ($filledIn){
                         <label for="visitor">Bezoeker<span>(verplicht)</span></label>
                         <select name="visitor" id="visitor" onchange="classroomAdder(this.value)">
                             <option value="" id="visitor-">Maak een keuze</option>
-                            <option value="yes" id="visitor-yes">Ik ben een bezoeker</option>
-                            <option value="no" id="visitor-no">Ik ben geen bezoeker</option>
+                            <option value="true" id="visitor-true">Ik kom alleen even kijken</option>
+                            <option value="false" id="visitor-false">Ik doe mee aan Nacht Van Cuijk</option>
                         </select>
                         <span class="error"><?php echo $visitorErr = $errors["visitor"] ?? ''; ?></span>
                     </div>
@@ -124,8 +123,8 @@ if ($filledIn){
                         <label for="snackcar">Frietkar (&euro;7)</label>
                         <select name="snackcar" id="snackcar">
                             <option value="">Maak een keuze</option>
-                            <option value="yes">Ja</option>
-                            <option value="no">Nee</option>
+                            <option value="true">Ja</option>
+                            <option value="false">Nee</option>
                         </select>
                     </div>
                     <div class="classroom" id="classroom-section">
@@ -141,7 +140,7 @@ if ($filledIn){
                             $query = 'SELECT * FROM Classrooms';
 
                             // Execute the SQL query and store the result
-                            $result = executeQuery($query);
+                            $result = executeQuery($query, '');
 
                             // Iterate through each row in the result and generate HTML options for a dropdown menu
                             while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {

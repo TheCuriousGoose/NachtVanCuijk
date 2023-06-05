@@ -3,28 +3,11 @@
  * Gemaakt door: Justin Lama Perez
 */
 
-include 'config.php';
-
-$config = new Config();
-
 ?>
 
-<!doctype html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/styles/stylesheet.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat|Roboto+Slab">
-    <script src='https://www.google.com/recaptcha/api.js' async defer></script>
-    <script src="scripts/script.js" defer></script>
-    <title>Nacht Van Cuijk</title>
-</head>
 <body>
 <div class="wrapper">
-    <div class="nav-wrapper">
+    <div class="nav-wrapper" id="nav-wrapper">
         <div class="logo">
             <a href="/index.php">
                 <img src="/images/logo.png" alt="Het logo van Nacht Van Cuijk">
@@ -38,6 +21,32 @@ $config = new Config();
                 <li class="nav-items"><a href="competities.php">COMPETITIES</a></li>
                 <li class="nav-items"><a href="contact.php">CONTACT</a></li>
             </ul>
+        </div>
+        <div class="mobile-nav">
+            <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </a>
+            <div id="nav-links">
+                <div class="mobile-nav-items-wrapper">
+                    <div class="mobile-nav-item">
+                        <a href="index.php">HOME</a>
+                    </div>
+                    <div class="mobile-nav-item">
+                        <a href="overons.php">OVER ONS</a>
+                    </div>
+                    <div class="mobile-nav-item">
+                        <a href="inschrijven.php">INSCHRIJVEN</a>
+                    </div>
+                    <div class="mobile-nav-item">
+                        <a href="competities.php">COMPETITIES</a>
+                    </div>
+                    <div class="mobile-nav-item">
+                        <a href="contact.php">CONTACT</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
