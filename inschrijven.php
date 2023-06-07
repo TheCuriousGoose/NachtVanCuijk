@@ -137,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             startConnection('NachtVanCuijk');
 
                             // Define the SQL query to select all rows from the 'Classrooms' table
-                            $query = 'SELECT * FROM Classrooms';
+                            $query = 'select Classrooms.*, count(SignUp.Classroom) as ClassroomCount from Classrooms WITH (NOLOCK) left join SignUp on Classrooms.ClassroomNumber = SignUp.Classroom group by ClassroomNumber, ClassroomLimit, ClassroomId';
 
                             // Execute the SQL query and store the result
                             $result = executeQuery($query, '');
@@ -146,7 +146,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
                                 // Extract the "ClassroomNumber" value from the current row and use it as the option value and text
                                 $classroomNumber = $row["ClassroomNumber"];
-                                echo "<option value='$classroomNumber'>$classroomNumber</option>";
+                                if(!($row['ClassroomCount'] >= $row['ClassroomLimit'])){
+                                    echo "<option value='$classroomNumber'>$classroomNumber (". $row['ClassroomCount']."/".$row['ClassroomLimit'].")</option>";
+                                }
                             }
                             ?>
                         </select>

@@ -9,7 +9,7 @@
 <div class="wrapper">
     <div class="nav-wrapper" id="nav-wrapper">
         <div class="logo">
-            <a href="/index.php">
+            <a href="index.php">
                 <img src="/images/logo.png" alt="Het logo van Nacht Van Cuijk">
             </a>
         </div>

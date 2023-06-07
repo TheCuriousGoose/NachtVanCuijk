@@ -17,6 +17,7 @@ $config = new Config();
     <link rel="stylesheet" href="/styles/stylesheet.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800|Roboto+Slab">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/x-icon" href="images/logo.ico">
     <script src='https://www.google.com/recaptcha/api.js' async defer></script>
     <script src="scripts/script.js" defer></script>
     <title>Nacht Van Cuijk</title>
