@@ -1,0 +1,284 @@
+:root {
+    --default-purple: #431C76;
+
+    --button-hover: #4c2480;
+    --button-active: #59318d;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #dadada;
+    overflow-x: clip;
+}
+
+nav {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 300px;
+    background-color: #23272A;
+    color: white;
+    height: 100vh;
+}
+
+nav > h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    line-height: 32px;
+    margin: 30px 10px 5px 10px;
+}
+
+nav > h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+    color: #6e797c;
+    margin: 0 0 10px 0;
+}
+
+.nav-items {
+    text-align: left;
+}
+
+a {
+    padding: 10px 20px;
+    display: block;
+    text-decoration: none;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    line-height: 40px;
+    width: 260px;
+    height: 40px;
+}
+
+a:hover{
+    background-color: #3e4244;
+    font-weight: 600;
+}
+
+.nav-hr {
+    width: 280px;
+    border-color: #848c8c;
+}
+
+.credit {
+    position: absolute;
+    bottom: 0;
+    width: 300px;
+}
+
+.credit > p {
+    font-family: 'Roboto Slab', sans-serif;
+}
+
+.login-wrapper {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    background-color: #23272A;
+}
+
+.login {
+    height: 600px;
+    width: 600px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.login-image {
+    width: 600px;
+    display: flex;
+    justify-content: center;
+}
+
+.login > img {
+    display: flex;
+    width: 400px;
+}
+
+.login > form {
+    margin-top: 70px;
+    width: 600px;
+    height: 150px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login > form > label {
+    display: flex;
+    align-self: flex-start;
+    margin: 20px 85px 5px;
+    font-family: Montserrat, sans-serif;
+    font-size: 20px;
+}
+
+.login > form > input{
+    padding: 15px;
+    font-size: 20px;
+    width: 400px;
+    height: 50px;
+    border-radius: 10px;
+    border: 0;
+}
+
+.login > form > button{
+    margin: 20px 0 0 0;
+    padding: 15px;
+    font-size: 20px;
+    width: 200px;
+    height: 50px;
+    border-radius: 10px;
+    border: 0;
+    background-color: var(--default-purple);
+    color: white;
+}
+
+.login > form > button:hover {
+    background-color: var(--button-hover);
+}
+
+.login > form > button:active {
+    background-color: var(--button-active);
+}
+
+.wrapper {
+    position: absolute;
+    left: 300px;
+    width: calc(100vw - 300px);
+    max-height: 100vh;
+}
+
+.wrapper-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
+.wrapper-header > h1 {
+    line-height: 20px;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+}
+
+.wrapper > hr {
+    width: 90%;
+    border: 1px solid gray;
+    padding: 0 25px;
+}
+
+.signups {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signups > form {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 100px;
+}
+
+.signups-table {
+    border-collapse: collapse;
+}
+
+.signups-table > thead > tr > th,
+.signups-table > tbody > tr > td {
+    /*padding-right: 40px;*/
+    min-width: 25px;
+    text-align: left;
+}
+
+.signups-table > thead > tr,
+.signups-table > tbody > tr {
+    border-bottom: gray 1px solid
+}
+
+.extra-width {
+    width: 230px;
+}
+
+.save-button {
+    width: 80px;
+    height: 30px;
+}
+
+.filters {
+    width: calc(100vw - 300px);
+    display: flex;
+    justify-content: space-around;
+}
+
+.filters > form {
+    width: 90%;
+    display: flex;
+    padding: 10px;
+    min-height: 50px;
+    margin: 5px;
+    border-radius: 10px;
+    background-color: #23272A;
+    color: white;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.filters > form > div {
+    display: flex;
+    flex-direction: column;
+    height: 40px;
+    min-width: 100px;
+    margin-bottom: 15px
+}
+
+.filters > form > div > label {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.filters > form > div > select,
+.filters > form > div > input {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    height: 25px;
+    border: none;
+    border-radius: 5px;
+}
+
+.filters > form > div:not(:first-of-type) {
+    margin-left: 30px;
+}
+
+.filters > form > div > button {
+    border: none;
+    background-color: var(--default-purple);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+}
+.filters > form > div > button:hover{
+    background-color: var(--button-hover);
+}
+.filters > form > div > button:active{
+    background-color: var(--button-active);
+}
