@@ -18,8 +18,9 @@
                 <li class="nav-items"><a href="index.php">HOME</a></li>
                 <li class="nav-items"><a href="overons.php">OVER ONS</a></li>
                 <li class="nav-items"><a href="inschrijven.php">INSCHRIJVEN</a></li>
-		<li class="nav-items"><a href="competities.php">COMPETITIES</a></li>
-<!--                <li class="nav-items"><a href="contact.php">CONTACT</a></li>-->
+                <li class="nav-items"><a href="competities.php">COMPETITIES</a></li>
+                <li class="nav-items"><a href="make-a-wish.php">MAKE-A-WISH</a></li>
+                <!--                <li class="nav-items"><a href="contact.php">CONTACT</a></li>-->
             </ul>
         </div>
         <div class="mobile-nav">
@@ -39,12 +40,15 @@
                     <div class="mobile-nav-item">
                         <a href="inschrijven.php">INSCHRIJVEN</a>
                     </div>
-                  <div class="mobile-nav-item">
+                    <div class="mobile-nav-item">
                         <a href="competities.php">COMPETITIES</a>
                     </div>
-  <!--                    <div class="mobile-nav-item">
+                    <div class="mobile-nav-item">
+                        <a href="make-a-wish.php">MAKE-A-WISH</a>
+                    </div>
+                    <div class="mobile-nav-item">
                         <a href="contact.php">CONTACT</a>
-                    </div>-->
+                    </div>
                 </div>
             </div>
         </div>
